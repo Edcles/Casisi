@@ -1,0 +1,19 @@
+package we.josemipepeedu.casisi.Tragaperras;
+
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
+import we.josemipepeedu.casisi.Utils.RenderableObject;
+
+public class SlotItemObject extends RenderableObject {
+	private SlotItem slotItem;
+	public SlotItemObject(String id, SlotItem slotItem, int x, int y) throws IOException {
+		super(id, x, y, 50, 50, ImageIO.read(SlotItemObject.class.getClassLoader().getResource("tragaperras/images/wheel/" + slotItem.getID() + ".png")));
+		this.slotItem = slotItem;
+	}
+	public SlotItem getSlotItem() {
+		return slotItem;
+	}
+}

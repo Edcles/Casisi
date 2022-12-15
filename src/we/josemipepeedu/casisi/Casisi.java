@@ -2,6 +2,7 @@ package we.josemipepeedu.casisi;
 
 import java.awt.EventQueue;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.util.HashMap;
 
 import javax.swing.JFrame;
@@ -24,16 +25,16 @@ public class Casisi extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
-	 */
 	public Casisi() {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("logo.png")));
+		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 800);
-		screens.put("game-tragaperras", new Tragaperras());
+		try {
+			screens.put("game-tragaperras", new Tragaperras());
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		setContentPane(screens.get("game-tragaperras"));
 	}
-
 }

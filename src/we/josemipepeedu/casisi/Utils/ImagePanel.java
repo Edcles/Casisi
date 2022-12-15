@@ -49,8 +49,11 @@ public class ImagePanel extends JPanel {
 		repaint();
 	}
 	public void paintComponent(Graphics g) {
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
+		if (getBackground().getAlpha() != 0) {
+			System.out.println("background pintado");
+			g.setColor(getBackground());
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 		if (directedTexture != null) {
 			if (backgroundType.equals(BackgroundType.FILL)) {
 				for (int x = 0; x <= (getWidth() / directedTexture.getWidth()); x++) {
