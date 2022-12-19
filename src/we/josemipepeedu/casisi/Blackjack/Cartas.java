@@ -7,10 +7,10 @@ import javax.imageio.ImageIO;
 import we.josemipepeedu.casisi.Utils.Utils;
 
 public enum Cartas {
-	//PICAS("cartas/picas{id}.png"),
-	TREBOL("cartas/trebol{id}.png");
-	//CORAZONES("cartas/corazones{id}.png"),
-	//ROMBO("cartas/rombo{id}.png");
+	PICAS("cartas/pica{id}.png"),
+	TREBOL("cartas/trebol{id}.png"),
+	CORAZONES("cartas/corazon{id}.png"),
+	ROMBO("cartas/rombo{id}.png");
 	
 	private String url;
 	

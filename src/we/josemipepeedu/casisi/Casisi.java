@@ -33,6 +33,7 @@ public class Casisi extends JFrame {
 	public Casisi() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 1200, 800);
+		setLocationRelativeTo(null);
 		try {
 			Panel = new Blackjack();
 		} catch (IOException e) {
@@ -42,5 +43,4 @@ public class Casisi extends JFrame {
 		Panel.setBackground(new Color(255, 255, 255));
 		setContentPane(Panel);
 	}
-
 }
