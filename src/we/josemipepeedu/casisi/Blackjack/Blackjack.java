@@ -32,7 +32,6 @@ public class Blackjack extends ImagePanel {
 	private final JTextField apuesta = new JTextField();
 
 
-
 	/**
 	 * Create the panel.
 	 * 
