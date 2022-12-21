@@ -1,4 +1,4 @@
-package we.josemipepeedu.casisi.Tragaperras;
+package we.josemipepeedu.casisi.Screen.Tragaperras;
 
 import java.awt.Canvas;
 import java.awt.Color;

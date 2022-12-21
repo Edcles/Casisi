@@ -1,4 +1,4 @@
-package we.josemipepeedu.casisi.Tragaperras;
+package we.josemipepeedu.casisi.Screen.Tragaperras;
 
 import we.josemipepeedu.casisi.Utils.Utils;
 
