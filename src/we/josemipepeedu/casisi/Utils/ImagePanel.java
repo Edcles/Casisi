@@ -48,6 +48,7 @@ public class ImagePanel extends JPanel {
 		}
 		repaint();
 	}
+<<<<<<< HEAD
 	public BufferedImage getDirectedTexture() {
 		return directedTexture;
 	}
@@ -57,6 +58,11 @@ public class ImagePanel extends JPanel {
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
+=======
+	public void paintComponent(Graphics g) {
+		g.setColor(getBackground());
+		g.fillRect(0, 0, getWidth(), getHeight());
+>>>>>>> origin/josemi
 		if (directedTexture != null) {
 			if (backgroundType.equals(BackgroundType.FILL)) {
 				for (int x = 0; x <= (getWidth() / directedTexture.getWidth()); x++) {
