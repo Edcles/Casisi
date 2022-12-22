@@ -50,7 +50,6 @@ public class ImagePanel extends JPanel {
 	}
 	public void paintComponent(Graphics g) {
 		if (getBackground().getAlpha() != 0) {
-			System.out.println("background pintado");
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}
@@ -60,7 +59,7 @@ public class ImagePanel extends JPanel {
 					for (int y = 0; y <= (getHeight() / directedTexture.getHeight()); y++) {
 						g.drawImage(radious != 0 ? makeRoundedCorner(directedTexture, radious) : directedTexture, directedTexture.getWidth()*x, directedTexture.getWidth()*y, null);
 					}
-				}	
+				}
 			} else if (backgroundType.equals(BackgroundType.IMAGE) ) {
 				g.drawImage(radious != 0 ? makeRoundedCorner(directedTexture, radious) : directedTexture, 0, 0, null);
 			} else if (backgroundType.equals(BackgroundType.PANEL) ) {

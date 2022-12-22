@@ -11,10 +11,12 @@ import java.util.HashMap;
 
 import javax.imageio.ImageIO;
 
+import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.RenderableObject;
 import we.josemipepeedu.casisi.Utils.Utils;
 
 public class SlotMachinePanel extends Canvas {
+	private Tragaperras tragaperras;
 	private HashMap<String, RenderableObject> renderables = new HashMap<String, RenderableObject>();
 	private BufferedImage lightOn;
 	private boolean otherLightAnimation = false;
@@ -23,7 +25,8 @@ public class SlotMachinePanel extends Canvas {
 	private long messageTime = 0;
 	private Font font = new Font("Aria", Font.PLAIN, 50);
 	private int apuesta = 50;
-	public SlotMachinePanel() {
+	public SlotMachinePanel(Tragaperras tragaperras) {
+		this.tragaperras = tragaperras;
 		setBounds(0, 0, 951, 756);
 		try {
 			lightOn = ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/lightOn.png"));
@@ -49,9 +52,7 @@ public class SlotMachinePanel extends Canvas {
 				if (pos[i][0] != 0) {
 					addRenderable(new RenderableObject("light_"+i, pos[i][0], pos[i][1], 60, 41, lightOn));
 				}
-			}
-			paintThread();
-			lightsThread();			
+			}		
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -105,14 +106,22 @@ public class SlotMachinePanel extends Canvas {
 					messageAlpha -= 25;
 				}
 			}
+			Font font = new Font("Times New Roman", Font.BOLD, 40);
+			FontMetrics metrics = g.getFontMetrics(font);
+			int stringWidth = metrics.stringWidth("Saldo: " + Casisi.getInstance().getBankSystem().getMoney());
+			g.setColor(new Color(195, 195, 195, 200));
+			g.fillRect(1150 - (stringWidth) - 10, 20, stringWidth + 20, 32);
+			g.setFont(font);
+			g.setColor(new Color(255, 207, 27));
+			g.drawString("Saldo: " + Casisi.getInstance().getBankSystem().getMoney(), 1150 - (stringWidth), 50);
 			getGraphics().drawImage(img, 0, 0, getWidth(), getHeight(), null);
 		} catch (Exception ex) {}
 	}
-	private void paintThread() {
+	public void paintThread() {
 		new Thread() {
 			@Override
 			public void run() {
-				while (true) {
+				while (tragaperras.isOpen()) {
 					try {
 						sleep(10);
 						paintt();
@@ -123,7 +132,7 @@ public class SlotMachinePanel extends Canvas {
 			}
 		}.start();
 	}
-	private void lightsThread() {
+	public void lightsThread() {
 		new Thread() {
 			@Override
 			public void run() {
@@ -142,7 +151,9 @@ public class SlotMachinePanel extends Canvas {
 						}
 					}
 				}
-				lightsThread2();
+				if (tragaperras.isOpen()) {
+					lightsThread2();
+				}
 			}
 		}.start();
 	}
@@ -184,7 +195,9 @@ public class SlotMachinePanel extends Canvas {
 						}
 					}
 				}
-				lightsThread();
+				if (tragaperras.isOpen()) {
+					lightsThread();
+				}
 			}
 		}.start();
 	}

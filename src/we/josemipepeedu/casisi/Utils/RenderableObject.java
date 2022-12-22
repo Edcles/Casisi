@@ -2,6 +2,8 @@ package we.josemipepeedu.casisi.Utils;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class RenderableObject {
@@ -12,6 +14,7 @@ public class RenderableObject {
 	private int height;
 	private BufferedImage bufferedImage;
 	private Color background;
+	private int angle = 0;
 	public RenderableObject(String id, int x, int y, int with, int height, BufferedImage bufferedImage) {
 		this.id = id;
 		this.x = x;
@@ -59,6 +62,30 @@ public class RenderableObject {
 	public void setBackground(Color color) {
 		this.background = color;
 	}
+	public int getAngle() {
+		return angle;
+	}
+	public void setAngle(int angle) {
+		this.angle = angle;
+	}
+	private BufferedImage rotateImageByDegrees(int angle) {
+		double rads = Math.toRadians(angle);
+        int w = bufferedImage.getWidth();
+        int h = bufferedImage.getHeight();
+
+        BufferedImage rotated = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g2d = rotated.createGraphics();
+        AffineTransform at = new AffineTransform();
+        at.translate(0, 0);
+
+        int x = w / 2;
+        int y = h / 2;
+        at.rotate(rads, x, y);
+        g2d.setTransform(at);
+        g2d.drawImage(bufferedImage, 0, 0, null);
+        g2d.dispose();
+        return rotated;
+	}
 	public void paint(Graphics g) {
 		paint(g, 0);
 	}
@@ -68,7 +95,11 @@ public class RenderableObject {
 			g.fillRect(x + plusX, y, with, height);
 		}
 		if (bufferedImage != null) {
-			g.drawImage(bufferedImage, x + plusX, y, with, height, null);
+			if (angle != 0) {
+				g.drawImage(rotateImageByDegrees(angle), x + plusX, y, with, height, null);
+			} else {
+				g.drawImage(bufferedImage, x + plusX, y, with, height, null);
+			}
 		}
 	}
 }

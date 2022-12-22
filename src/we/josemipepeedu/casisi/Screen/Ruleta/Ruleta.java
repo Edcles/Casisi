@@ -12,11 +12,12 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.border.LineBorder;
 
 import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.ImagePanel;
+import we.josemipepeedu.casisi.Utils.Screen;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -28,7 +29,7 @@ import java.awt.event.MouseEvent;
  * Clase de la Ruleta
  */
 
-public class Ruleta extends JPanel {
+public class Ruleta extends Screen {
 	private static final long serialVersionUID = 8910088409767064275L;
 	
 	private static JPanel topPanel = new JPanel(); // Panel superior que contiene el botón de volver, el tiempo y el título
@@ -65,7 +66,7 @@ public class Ruleta extends JPanel {
 	 */
 
 	public Ruleta(Casisi casisi) {
-		casisi.repaint();
+		super(null);
 		setLayout(null);
 		setBackground(new Color(3, 76, 3));
 		
@@ -94,8 +95,7 @@ public class Ruleta extends JPanel {
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					casisi.setContentPane(casisi.getScreens().get("game-inicio"));
-					casisi.repaint();
+					casisi.openScreen("game-inicio");
 				}
 			});
 			volver.setBackgroundType(BackgroundType.PANEL);
@@ -136,7 +136,7 @@ public class Ruleta extends JPanel {
 		topPanel.add(titulo);
 		
 		// Canvas del juego
-		game = new Game(gamePanel.getWidth(), gamePanel.getHeight());
+		game = new Game(this, gamePanel.getWidth(), gamePanel.getHeight());
 		
 		gamePanel.add(game);
 		
@@ -217,9 +217,17 @@ public class Ruleta extends JPanel {
 		add(gamePanel);
 		add(bottomPanel);
 		setVisible(true);
-	}
-	
+	}	
 	public static JPanel getGamePanel() {
 		return gamePanel;
+	}
+	@Override
+	public void onOpen() {
+		game.paintThread();
+		repaint();
+	}
+	@Override
+	public void onClose() {
+		
 	}
 }

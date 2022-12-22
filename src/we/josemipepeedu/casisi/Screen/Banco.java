@@ -9,33 +9,30 @@ import java.awt.event.MouseListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import javax.swing.JPanel;
 
 import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.ImagePanel;
-import java.awt.image.BufferedImage;
+import we.josemipepeedu.casisi.Utils.Screen;
+import we.josemipepeedu.casisi.Utils.Utils;
+
 import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
-import java.awt.Image;
 
 import javax.swing.JTextField;
-import javax.swing.WindowConstants;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JPanel;
 
-public class Banco extends ImagePanel {
+public class Banco extends Screen {
 	private JTextField textField;
 	
-	private static int fichasCant = 0;
-	
 	private static ImagePanel volver;
+	private JLabel lbl_creditos;
 	
 	public Banco(Casisi casisi) throws IOException {
-		super(null);
-		setTexture(ImageIO.read(getClass().getClassLoader().getResource("fondo.jpg")));
+		super(Utils.selectedFondo);
 		setBackgroundType(BackgroundType.FILL);
 		setBounds(new Rectangle(0, 0, 1200, 800));
 		setLayout(null);
@@ -45,8 +42,7 @@ public class Banco extends ImagePanel {
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					casisi.setContentPane(casisi.getScreens().get("game-inicio"));
-					casisi.repaint();
+					casisi.openScreen("game-inicio");
 				}
 			});
 			volver.setBackgroundType(BackgroundType.PANEL);
@@ -98,23 +94,28 @@ public class Banco extends ImagePanel {
 			}
 		});
 		
-		JLabel lblNewLabel_1 = new JLabel();
-		lblNewLabel_1.setText(fichasCant + " creditos");
-		lblNewLabel_1.setBounds(836, 446, 128, 26);
-		add(lblNewLabel_1);
+		lbl_creditos = new JLabel();
+		lbl_creditos.setText(casisi.getBankSystem().getMoney() + " creditos");
+		lbl_creditos.setBounds(836, 446, 128, 26);
+		add(lbl_creditos);
 		
 		JButton btnNewButton = new JButton("Convertir");
 		btnNewButton.setBounds(335, 486, 100, 23);
 		add(btnNewButton);
 		
+		JPanel panel_1 = new JPanel();
+		panel_1.setBackground(new Color(192, 192, 192, 225));
+		panel_1.setBounds(227, 87, 825, 477);
+		add(panel_1);
+		
 		btnNewButton.addMouseListener(new MouseListener() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
-				System.out.println("AAA");
-				fichasCant += Integer.parseInt(textField.getText());
-				Inicio.getSaldo().setText("Saldo: " + fichasCant);
-				lblNewLabel_1.setText(fichasCant + " créditos");				
-				lblNewLabel_1.repaint();
+				try {
+					casisi.getBankSystem().addMoney(Integer.parseInt(textField.getText()));
+					lbl_creditos.setText(casisi.getBankSystem().getMoney() + " créditos");				
+					lbl_creditos.repaint();
+				} catch (NumberFormatException ex) {}
 			}
 			@Override
 			public void mousePressed(MouseEvent e) {}
@@ -126,8 +127,13 @@ public class Banco extends ImagePanel {
 			public void mouseExited(MouseEvent e) {}
 		});
 	}
-	
-	public static int getCant() {
-		return fichasCant;
+	@Override
+	public void onOpen() {
+		setTexture(Utils.selectedFondo);
+		lbl_creditos.setText(Casisi.getInstance().getBankSystem().getMoney() + " creditos");
+	}
+	@Override
+	public void onClose() {
+		
 	}
 }

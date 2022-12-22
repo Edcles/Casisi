@@ -1,8 +1,11 @@
 package we.josemipepeedu.casisi.Utils;
 
-import javax.swing.JPanel;
+import java.awt.image.BufferedImage;
 
-public abstract class Screen extends JPanel {
+public abstract class Screen extends ImagePanel {
+	public Screen(BufferedImage texture) {
+		super(texture);
+	}
 	private boolean openned = false;
 	public boolean isOpen() {
 		return openned;

@@ -3,7 +3,6 @@ package we.josemipepeedu.casisi.Screen.Ruleta;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -25,7 +24,7 @@ import we.josemipepeedu.casisi.Utils.RenderableObject;
 
 public class Game extends Canvas {
 	private static final long serialVersionUID = -6895564443654717344L;
-	
+	private Ruleta ruleta;
 	private int width; // Variable que contiene el ancho del panel
 	private int height; // variable que contiene el alto del panel	
 	private int mouseX; // Variable que almacena la posicion X del raton
@@ -44,7 +43,8 @@ public class Game extends Canvas {
 	private static HashMap<String, RenderableObject> objetos = new HashMap<String, RenderableObject>(); // HashMap que contiene los objetos rendeables
 	//private static HashMap<>
 
-	public Game(int width, int height) {
+	public Game(Ruleta ruleta, int width, int height) {
+		this.ruleta = ruleta;
 		this.width = width;
 		this.height = height;
 		//System.out.println(width + " - " + height);
@@ -68,18 +68,17 @@ public class Game extends Canvas {
 		});
 		
 		try {
-			addObject("ruleta", new RenderableObject("ruleta", 5, 20, (int) (452 - (452 * 0.08)), (int) (452 - (452 * 0.08)), ImageIO.read(getClass().getClassLoader().getResource("ruleta.png"))));
-			addObject("tabla", new RenderableObject("tabla", (int) (452 - (452 * 0.08)) + 5, 5, 712, 341, ImageIO.read(getClass().getClassLoader().getResource("tabla.png"))));
-			addObject("ficha1", new Ficha1("ficha1", 0, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_1.png")), 1));
-			addObject("ficha5", new Ficha5("ficha5", 50, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_5.png")), 5));
-			addObject("ficha10", new Ficha10("ficha10", 100, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_10.png")), 10));
-			addObject("ficha20", new Ficha20("ficha20", 150, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_20.png")), 20));
-			addObject("ficha50", new Ficha50("ficha50", 200, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_50.png")), 50));
-			addObject("ficha100", new Ficha100("ficha100", 250, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_100.png")), 100));
+			addObject("ruleta", new RenderableObject("ruleta", 5, 20, (int) (452 - (452 * 0.08)), (int) (452 - (452 * 0.08)), ImageIO.read(getClass().getClassLoader().getResource("ruleta/ruleta.png"))));
+			addObject("tabla", new RenderableObject("tabla", (int) (452 - (452 * 0.08)) + 5, 5, 712, 341, ImageIO.read(getClass().getClassLoader().getResource("ruleta/tabla.png"))));
+			addObject("ficha1", new Ficha1("ficha1", 0, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_1.png")), 1));
+			addObject("ficha5", new Ficha5("ficha5", 50, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_5.png")), 5));
+			addObject("ficha10", new Ficha10("ficha10", 100, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_10.png")), 10));
+			addObject("ficha20", new Ficha20("ficha20", 150, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_20.png")), 20));
+			addObject("ficha50", new Ficha50("ficha50", 200, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_50.png")), 50));
+			addObject("ficha100", new Ficha100("ficha100", 250, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_100.png")), 100));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		paintThread();
 	}
 	
 	private void addObject(String nombre, RenderableObject objeto) {
@@ -100,14 +99,9 @@ public class Game extends Canvas {
 				Graphics g = img.getGraphics();
 				g.setColor(new Color(3, 76, 3));
 				g.fillRect(0, 0, getWidth(), getHeight());
-				g.drawImage(objetos.get("ruleta").rotateImageByDegrees(objetos.get("ruleta").getTexture(), getRotation()), objetos.get("ruleta").getX(), objetos.get("ruleta").getY(), objetos.get("ruleta").getWith(), objetos.get("ruleta").getHeight(), null);
-				g.drawImage(objetos.get("tabla").getTexture().getScaledInstance(712, 341, Image.SCALE_SMOOTH), objetos.get("tabla").getX(), objetos.get("tabla").getY(), objetos.get("tabla").getWith(), objetos.get("tabla").getHeight(), null);
-				g.drawImage(objetos.get("ficha1").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha1").getX(), objetos.get("ficha1").getY(), objetos.get("ficha1").getWith(), objetos.get("ficha1").getHeight(), null);
-				g.drawImage(objetos.get("ficha5").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha5").getX(), objetos.get("ficha5").getY(), objetos.get("ficha5").getWith(), objetos.get("ficha5").getHeight(), null);
-				g.drawImage(objetos.get("ficha10").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha10").getX(), objetos.get("ficha10").getY(), objetos.get("ficha10").getWith(), objetos.get("ficha10").getHeight(), null);
-				g.drawImage(objetos.get("ficha20").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha20").getX(), objetos.get("ficha20").getY(), objetos.get("ficha20").getWith(), objetos.get("ficha20").getHeight(), null);
-				g.drawImage(objetos.get("ficha50").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha50").getX(), objetos.get("ficha50").getY(), objetos.get("ficha50").getWith(), objetos.get("ficha50").getHeight(), null);
-				g.drawImage(objetos.get("ficha100").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha100").getX(), objetos.get("ficha100").getY(), objetos.get("ficha100").getWith(), objetos.get("ficha100").getHeight(), null);
+				for (RenderableObject object : objetos.values()) {
+					object.paint(g);
+				}
 				g.setColor(Color.green);
 				g.fillPolygon(a, b, 3);
 				if (getGraphics() != null) {
@@ -120,11 +114,11 @@ public class Game extends Canvas {
 		}
 	}
 	
-	private void paintThread() {
+	public void paintThread() {
 		new Thread() {
 			@Override
 			public void run() {
-				while (true) {
+				while (ruleta.isOpen()) {
 					try {
 						sleep(10);
 						paintt();
@@ -162,6 +156,7 @@ public class Game extends Canvas {
 	
 	public void setRotation(int rotation) {
 		this.rotation = rotation;
+		objetos.get("ruleta").setAngle(rotation);
 	}
 	
 	public int getRotation() {

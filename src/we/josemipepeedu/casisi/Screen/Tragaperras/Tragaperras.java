@@ -1,16 +1,19 @@
 package we.josemipepeedu.casisi.Screen.Tragaperras;
 
-import javax.swing.JPanel;
-
 import we.josemipepeedu.casisi.Casisi;
+import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.Callback;
 import we.josemipepeedu.casisi.Utils.GameAudio;
+import we.josemipepeedu.casisi.Utils.ImagePanel;
+import we.josemipepeedu.casisi.Utils.Screen;
 import we.josemipepeedu.casisi.Utils.Utils;
 
 import java.awt.Color;
 import java.awt.Dimension;
 
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -20,31 +23,37 @@ import java.awt.Point;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.Font;
 
-public class Tragaperras extends JPanel {
+public class Tragaperras extends Screen {
 	private List<Spin> spinners = new ArrayList<Spin>();
 	private SlotMachinePanel slotMachine;
 	private HashMap<Integer, Boolean> buttons = new HashMap<Integer, Boolean>();
 	private boolean jackpot = false;
-	private JLabel labelFichas;
+	private ImagePanel volver;
 	public Tragaperras() throws IOException {
+		super(null);
 		setSize(new Dimension(1200, 800));
 		setLayout(null);
-		
-		labelFichas = new JLabel("Fichas: 0");
-		labelFichas.setBackground(new Color(0, 0, 0, 0));
-		labelFichas.setFont(new Font("Tahoma", Font.PLAIN, 14));
-		labelFichas.setHorizontalAlignment(SwingConstants.TRAILING);
-		labelFichas.setBounds(1027, 0, 173, 26);
-		add(labelFichas);
-		
+		try {
+			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
+			volver.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					Casisi.getInstance().openScreen("game-inicio");
+				}
+			});
+			volver.setBackgroundType(BackgroundType.PANEL);
+			volver.setBackground(new Color(0, 0, 0, 0));
+			volver.setBounds(0, 0, 80, 80);
+			//volver.setBorder(new LineBorder(Color.BLUE));
+			add(volver);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		buttons.put(1, false);
 		buttons.put(2, false);
 		buttons.put(3, false);
-		slotMachine = new SlotMachinePanel();
+		slotMachine = new SlotMachinePanel(this);
 		slotMachine.addMouseMotionListener(new MouseMotionAdapter() {
 			@Override
 			public void mouseDragged(MouseEvent e) {
@@ -137,7 +146,11 @@ public class Tragaperras extends JPanel {
 					try {
 						removeJackpot();
 						if (buttons.get(3)) {
-							spin();
+							if (Casisi.getInstance().getBankSystem().getMoney() < slotMachine.getApuesta()) {
+								JOptionPane.showMessageDialog(null, "No tienes fichas suficientes para hacer una apuesta de " + slotMachine.getApuesta());
+							} else {
+								spin();
+							}
 						}
 						buttons.put(3, false);
 						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton.png")));
@@ -189,6 +202,7 @@ public class Tragaperras extends JPanel {
 								} else if (winner.getValue() == 3) {
 									int win = (int) (winner.getKey().getAllReward() * slotMachine.getApuesta());
 									slotMachine.setMessage("+ " + win, 1500);
+									Casisi.getInstance().getBankSystem().addMoney(win);
 									jackpot = true;
 									new Thread() {
 										@Override
@@ -226,9 +240,19 @@ public class Tragaperras extends JPanel {
 			}
 		}
 		if (!oneActive) {
+			Casisi.getInstance().getBankSystem().removeMoney(slotMachine.getApuesta());
 			for (Spin spin : spinners) {
 				spin.toStart();
 			}
 		}
+	}
+	@Override
+	public void onOpen() {
+		slotMachine.paintThread();
+		slotMachine.lightsThread();
+	}
+	@Override
+	public void onClose() {
+		
 	}
 }

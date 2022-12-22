@@ -1,32 +1,28 @@
 package we.josemipepeedu.casisi.Screen.Blackjack;
 
-import javax.swing.JPanel;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import java.awt.Color;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map.Entry;
-import java.util.Random;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 
 import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.ImagePanel;
-import java.awt.Rectangle;
-import java.awt.Dimension;
+import we.josemipepeedu.casisi.Utils.Screen;
 
-public class Blackjack extends ImagePanel {
+import java.awt.Rectangle;
+
+public class Blackjack extends Screen {
 	private boolean playing = true;
 	private boolean puedeApostar = true;
 	private HashMap<Cartas, List<Integer>> baraja = new HashMap<Cartas, List<Integer>>();
@@ -50,8 +46,7 @@ public class Blackjack extends ImagePanel {
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					casisi.setContentPane(casisi.getScreens().get("game-inicio"));
-					casisi.repaint();
+					casisi.openScreen("game-inicio");
 				}
 			});
 			volver.setBackgroundType(BackgroundType.PANEL);
@@ -152,16 +147,16 @@ public class Blackjack extends ImagePanel {
 		carta5.setBackgroundType(BackgroundType.PANEL);
 		carta5.setBackground(new Color(0, 0, 0, 0));
 		tablero.add(carta5);
-		carta1.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta2.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta3.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta4.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta5.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
+		carta1.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta2.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta3.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta4.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta5.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 		generarCarta(carta1cup, false);
-		carta2cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta3cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta4cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-		carta5cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
+		carta2cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta3cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta4cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+		carta5cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 
 
 
@@ -213,16 +208,16 @@ public class Blackjack extends ImagePanel {
 				mano_jugador.clear();
 				mano_crupier.clear();
 				try {
-					carta1.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta2.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta3.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta4.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta5.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
+					carta1.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta2.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta3.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta4.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta5.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 					generarCarta(carta1cup, false);
-					carta2cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta3cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta4cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
-					carta5cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("reversocarta.png")));
+					carta2cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta3cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta4cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
+					carta5cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 					paintComponents(getGraphics());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
@@ -279,7 +274,6 @@ public class Blackjack extends ImagePanel {
 										"HAS GANADO",
 										JOptionPane.WARNING_MESSAGE);
 							}
-							System.out.println("HE PARADO " + ganadorcupier());
 						}
 					}.start();
 				}
@@ -380,5 +374,13 @@ public class Blackjack extends ImagePanel {
 		} else {
 			return false;
 		}
+	}
+	@Override
+	public void onOpen() {
+		
+	}
+	@Override
+	public void onClose() {
+		
 	}
 }
