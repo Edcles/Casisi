@@ -48,12 +48,9 @@ public class ImagePanel extends JPanel {
 		}
 		repaint();
 	}
-	public BufferedImage getDirectedTexture() {
-		return directedTexture;
-	}
 	public void paintComponent(Graphics g) {
 		if (getBackground().getAlpha() != 0) {
-			//System.out.println("background pintado");
+			System.out.println("background pintado");
 			g.setColor(getBackground());
 			g.fillRect(0, 0, getWidth(), getHeight());
 		}

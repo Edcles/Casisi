@@ -2,6 +2,8 @@ package we.josemipepeedu.casisi.Screen.Tragaperras;
 
 import java.awt.Canvas;
 import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,19 +12,26 @@ import java.util.HashMap;
 import javax.imageio.ImageIO;
 
 import we.josemipepeedu.casisi.Utils.RenderableObject;
+import we.josemipepeedu.casisi.Utils.Utils;
 
 public class SlotMachinePanel extends Canvas {
 	private HashMap<String, RenderableObject> renderables = new HashMap<String, RenderableObject>();
 	private BufferedImage lightOn;
 	private boolean otherLightAnimation = false;
+	private String message = "";
+	private int messageAlpha = 255;
+	private long messageTime = 0;
+	private Font font = new Font("Aria", Font.PLAIN, 50);
+	private int apuesta = 50;
 	public SlotMachinePanel() {
 		setBounds(0, 0, 951, 756);
 		try {
-			lightOn = ImageIO.read(getClass().getClassLoader().getResource("lightOn.png"));
-			addRenderable(new RenderableObject("slot_machine", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("slotMachine.png"))));
-			addRenderable(new RenderableObject("button1", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("button1.png"))));
-			addRenderable(new RenderableObject("button2", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("button2.png"))));
-			addRenderable(new RenderableObject("roundButton", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("roundButton.png"))));
+			lightOn = ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/lightOn.png"));
+			addRenderable(new RenderableObject("slot_machine", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/slotMachine.png"))));
+			addRenderable(new RenderableObject("slot_panel", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/slot_panel.png"))));
+			addRenderable(new RenderableObject("button1", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button1.png"))));
+			addRenderable(new RenderableObject("button2", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button2.png"))));
+			addRenderable(new RenderableObject("roundButton", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton.png"))));
 			int[][] pos = new int[44][2];
 			for (int i = 0; i < 12; i++) {
 				pos[i] = new int[] {(int) (164 + (i*49.5)), 249};
@@ -63,22 +72,37 @@ public class SlotMachinePanel extends Canvas {
 	private void paintt() {
 		try {
 			BufferedImage img = new BufferedImage(getWidth(), getHeight(), BufferedImage.TYPE_INT_RGB);
-			img.getGraphics().setColor(new Color(0, 0, 0, 0));
-			img.getGraphics().fillRect(0, 0, getWidth(), getHeight());
+			Graphics g = img.getGraphics();
+			for (int x = 0; x <= (getWidth() / 200); x++) {
+				for (int y = 0; y <= (getHeight() / 200); y++) {
+					g.drawImage(Utils.fondoOscuro, 200*x, 200*y, 200, 200, null);
+				}
+			}
+			g.fillRect(350, 300, 450, 200);
 			String[] entries = renderables.keySet().toArray(new String[] {});
 			for (String entry : entries) {
 				if (renderables.containsKey(entry)) {
 					if (entry.contains("slot_") && !entry.equals("slot_machine")) {
-						renderables.get(entry).paint(img.getGraphics());
+						renderables.get(entry).paint(g, 120);
 					}
 				}
 			}
-			img.getGraphics().drawImage(renderables.get("slot_machine").getTexture(), renderables.get("slot_machine").getX(), renderables.get("slot_machine").getY(), renderables.get("slot_machine").getWith(), renderables.get("slot_machine").getHeight(), null);
+			renderables.get("slot_machine").paint(g, 120);
+			renderables.get("slot_panel").paint(g, 120);
 			for (String entry : entries) {
 				if (renderables.containsKey(entry)) {
 					if (!entry.contains("slot_")) {
-						renderables.get(entry).paint(img.getGraphics());
+						renderables.get(entry).paint(g, 120);
 					}
+				}
+			}
+			if (messageAlpha > 0) {
+				g.setColor(new Color (255, 255, 255, messageAlpha));
+				g.setFont(font);
+			    FontMetrics metrics = g.getFontMetrics(font);
+				g.drawString(message, 580 - (metrics.stringWidth(message) / 2), 210);
+				if (messageTime - System.currentTimeMillis() < 0) {
+					messageAlpha -= 25;
 				}
 			}
 			getGraphics().drawImage(img, 0, 0, getWidth(), getHeight(), null);
@@ -163,5 +187,23 @@ public class SlotMachinePanel extends Canvas {
 				lightsThread();
 			}
 		}.start();
+	}
+	public int getApuesta() {
+		return apuesta;
+	}
+	public void setApuesta(int apuesta) {
+		if (apuesta < 25) {
+			apuesta = 25;
+		}
+		if (apuesta > 500) {
+			apuesta = 500;
+		}
+		this.apuesta = apuesta;
+		setMessage("Apuesta: " + apuesta + "€", 2500);
+	}
+	public void setMessage(String msg, long time) {
+		this.messageAlpha = 255;
+		this.message = msg;
+		this.messageTime = System.currentTimeMillis() + time;
 	}
 }

@@ -2,14 +2,10 @@ package we.josemipepeedu.casisi.Screen.Tragaperras;
 
 import java.awt.Color;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-
 import we.josemipepeedu.casisi.Utils.Callback;
-import we.josemipepeedu.casisi.Utils.GameAudio;
 import we.josemipepeedu.casisi.Utils.RenderableObject;
 
 public class Spin extends Thread {

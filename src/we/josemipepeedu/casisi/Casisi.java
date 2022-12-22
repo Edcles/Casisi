@@ -5,20 +5,19 @@ import java.awt.Toolkit;
 import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-import we.josemipepeedu.casisi.Screen.Banco;
-import we.josemipepeedu.casisi.Screen.Inicio;
-import we.josemipepeedu.casisi.Screen.Blackjack.Blackjack;
-import we.josemipepeedu.casisi.Screen.Ruleta.Ruleta;
 import we.josemipepeedu.casisi.Screen.Tragaperras.Tragaperras;
+import we.josemipepeedu.casisi.Utils.Utils;
+import we.josemipepeedu.casisi.system.BankSystem;
 
 
 public class Casisi extends JFrame {
-	private static final long serialVersionUID = 4966135616136917821L;
-	private static HashMap<String, JPanel> screens = new HashMap<String, JPanel>();
-	
+	private static Casisi instance;
+	private HashMap<String, JPanel> screens = new HashMap<String, JPanel>();
+	private BankSystem bankSystem = new BankSystem();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -31,26 +30,28 @@ public class Casisi extends JFrame {
 			}
 		});
 	}
-	
-	public Casisi() {
+	public Casisi() throws IOException {
+		instance = this;
+		Utils.fondoClaro = ImageIO.read(getClass().getClassLoader().getResource("fondo.jpg"));
+		Utils.fondoOscuro = ImageIO.read(getClass().getClassLoader().getResource("fondo2.jpg"));
 		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getClassLoader().getResource("logo.png")));
 		setResizable(false);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(0, 0, 1200, 800);
-		setTitle("Casisi");
+		setBounds(100, 100, 1200, 800);
 		try {
-			screens.put("game-tragaperras", new Tragaperras(this));
-			screens.put("game-ruleta", new Ruleta(this));
-			screens.put("game-blackjack", new Blackjack(this));
-			screens.put("game-inicio", new Inicio(this));
-			screens.put("game-banco", new Banco(this));
+			screens.put("game-tragaperras", new Tragaperras());
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setContentPane(screens.get("game-inicio"));
+		setContentPane(screens.get("game-tragaperras"));
 	}
-	
-	public static HashMap<String, JPanel> getScreens() {
-		return screens;
+	public void openScreen(String id) {
+		setContentPane(screens.get(id));
+	}
+	public static Casisi getInstance() {
+		return instance;
+	}
+	public BankSystem getBankSystem() {
+		return bankSystem;
 	}
 }

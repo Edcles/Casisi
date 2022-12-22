@@ -2,8 +2,6 @@ package we.josemipepeedu.casisi.Utils;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 
 public class RenderableObject {
@@ -62,31 +60,15 @@ public class RenderableObject {
 		this.background = color;
 	}
 	public void paint(Graphics g) {
+		paint(g, 0);
+	}
+	public void paint(Graphics g, int plusX) {
 		if (background != null) {
 			g.setColor(background);
-			g.fillRect(x, y, with, height);
+			g.fillRect(x + plusX, y, with, height);
 		}
 		if (bufferedImage != null) {
-			g.drawImage(bufferedImage, x, y, with, height, null);
+			g.drawImage(bufferedImage, x + plusX, y, with, height, null);
 		}
-	}
-	public BufferedImage rotateImageByDegrees(BufferedImage img, int angle) {
-		double rads = Math.toRadians(angle);
-        int w = img.getWidth();
-        int h = img.getHeight();
-
-        BufferedImage rotated = new BufferedImage(w, h, BufferedImage.TYPE_INT_ARGB);
-        Graphics2D g2d = rotated.createGraphics();
-        AffineTransform at = new AffineTransform();
-        at.translate(0, 0);
-
-        int x = w / 2;
-        int y = h / 2;
-        at.rotate(rads, x, y);
-        g2d.setTransform(at);
-        g2d.drawImage(img, 0, 0, null);
-        g2d.dispose();
-
-        return rotated;
 	}
 }
