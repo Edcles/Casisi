@@ -38,9 +38,8 @@ public class Blackjack extends ImagePanel {
 	
 	public Blackjack(Casisi casisi) throws IOException {
 		super(null);
-		setTexture(ImageIO.read(getClass().getClassLoader().getResource("fondo2.jpg")));
-		setBackgroundType(BackgroundType.FILL);
-		setSize(new Dimension(1200, 800));
+		/*setTexture(ImageIO.read(getClass().getClassLoader().getResource("fondo2.jpg")));
+		setBackgroundType(BackgroundType.FILL);*/
 		setBounds(new Rectangle(0, 0, 1200, 800));
 		setBackground(new Color(0, 0, 0));
 		setForeground(new Color(255, 255, 255));
@@ -96,7 +95,7 @@ public class Blackjack extends ImagePanel {
 
 		ImagePanel tablero = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("tablero2.jpg")));
 		tablero.setBackgroundType(BackgroundType.PANEL);
-		tablero.setBounds(10, 11, 1180, 762);
+		tablero.setBounds(0, 0, 1185, 762);
 		add(tablero);
 
 		ImagePanel carta1 = new ImagePanel(null, 50);

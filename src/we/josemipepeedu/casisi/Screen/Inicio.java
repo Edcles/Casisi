@@ -1,6 +1,7 @@
 package we.josemipepeedu.casisi.Screen;
 
 import java.awt.Color;
+import java.awt.Font;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -30,6 +31,7 @@ public class Inicio extends JPanel {
 	private boolean juegosSelected = false;
 	
 	private static JLabel saldo;
+	private static JLabel saldo2;
 	
 	public Inicio(Casisi casisi) {
 		repaint();
@@ -128,9 +130,20 @@ public class Inicio extends JPanel {
 			});
 
 			saldo = new JLabel();
+			saldo.setForeground(new Color(241, 196, 15));
+			saldo.setFont(new Font("Times New Roman", getFont().BOLD, 40));
 			saldo.setText("Saldo: 0");
-			saldo.setBounds(994, 26, 127, 28);
+			saldo.setBounds(950, 26, 250, 28);
+			saldo.setBackground(Color.white);
 			panelentero.add(saldo);
+
+			saldo2 = new JLabel();
+			saldo2.setForeground(Color.black);
+			saldo2.setFont(new Font("Times New Roman", getFont().BOLD, 40));
+			saldo2.setText("Saldo: 0");
+			saldo2.setBackground(Color.white);
+			saldo2.setBounds(949, 25, 251, 29);
+			panelentero.add(saldo2);
 
 			luz.addMouseListener(new MouseAdapter() {
 				@Override

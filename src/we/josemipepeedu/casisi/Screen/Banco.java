@@ -19,10 +19,14 @@ import javax.swing.JLabel;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.Image;
+
 import javax.swing.JTextField;
+import javax.swing.WindowConstants;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 
-public class Banco extends JPanel {
+public class Banco extends ImagePanel {
 	private JTextField textField;
 	
 	private static int fichasCant = 0;
@@ -30,8 +34,12 @@ public class Banco extends JPanel {
 	private static ImagePanel volver;
 	
 	public Banco(Casisi casisi) throws IOException {
+		super(null);
+		setTexture(ImageIO.read(getClass().getClassLoader().getResource("fondo.jpg")));
+		setBackgroundType(BackgroundType.FILL);
 		setBounds(new Rectangle(0, 0, 1200, 800));
 		setLayout(null);
+		
 		try {
 			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
 			volver.addMouseListener(new MouseAdapter() {
@@ -57,6 +65,7 @@ public class Banco extends JPanel {
 		
 		ImagePanel fichas = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("dinero.png")));
 		fichas.setBackgroundType(BackgroundType.PANEL);
+		fichas.setBackground(new Color(0, 0, 0, 0));
 		fichas.setBounds(745, 254, 295, 144);
 		add(fichas);
 		
@@ -67,6 +76,7 @@ public class Banco extends JPanel {
 		
 		ImagePanel Imaflecha = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("flecha.png")));
 		Imaflecha.setBackgroundType(BackgroundType.PANEL);
+		Imaflecha.setBackground(new Color(0, 0, 0, 0));
 		Imaflecha.setBounds(596, 306, 75, 53);
 		add(Imaflecha);
 		
