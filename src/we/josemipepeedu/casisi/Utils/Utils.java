@@ -1,6 +1,5 @@
 package we.josemipepeedu.casisi.Utils;
 
-<<<<<<< HEAD
 import java.awt.Point;
 import java.util.Random;
 
@@ -13,10 +12,4 @@ public class Utils {
 		}	
 		return false;
 	}
-=======
-import java.util.Random;
-
-public class Utils {
-	public static Random random = new Random();
->>>>>>> origin/josemi
 }

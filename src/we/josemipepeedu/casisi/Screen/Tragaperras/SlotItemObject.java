@@ -10,7 +10,7 @@ import we.josemipepeedu.casisi.Utils.RenderableObject;
 public class SlotItemObject extends RenderableObject {
 	private SlotItem slotItem;
 	public SlotItemObject(String id, SlotItem slotItem, int x, int y) throws IOException {
-		super(id, x, y, 50, 50, ImageIO.read(SlotItemObject.class.getClassLoader().getResource("tragaperras/images/wheel/" + slotItem.getID() + ".png")));
+		super(id, x, y, 50, 50, ImageIO.read(SlotItemObject.class.getClassLoader().getResource(slotItem.getID() + ".png")));
 		this.slotItem = slotItem;
 	}
 	public SlotItem getSlotItem() {

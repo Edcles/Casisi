@@ -2,6 +2,7 @@ package we.josemipepeedu.casisi.Screen.Tragaperras;
 
 import javax.swing.JPanel;
 
+import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.Callback;
 import we.josemipepeedu.casisi.Utils.GameAudio;
@@ -34,9 +35,29 @@ public class Tragaperras extends JPanel {
 	private List<Spin> spinners = new ArrayList<Spin>();
 	private SlotMachinePanel slotMachine;
 	private HashMap<Integer, Boolean> buttons = new HashMap<Integer, Boolean>();
-	public Tragaperras() throws IOException {
+	private static ImagePanel volver;
+	public Tragaperras(Casisi casisi) throws IOException {
 		setSize(new Dimension(1200, 800));
 		setLayout(null);
+		
+		try {
+			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
+			volver.addMouseListener(new MouseAdapter() {
+				@Override
+				public void mouseClicked(MouseEvent e) {
+					casisi.setContentPane(casisi.getScreens().get("game-inicio"));
+					casisi.repaint();
+				}
+			});
+			volver.setBackgroundType(BackgroundType.PANEL);
+			volver.setBackground(new Color(0, 0, 0, 0));
+			volver.setBounds(0, 0, 80, 80);
+			//volver.setBorder(new LineBorder(Color.BLUE));
+			add(volver);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
 		buttons.put(1, false);
 		buttons.put(2, false);
 		buttons.put(3, false);
@@ -48,7 +69,7 @@ public class Tragaperras extends JPanel {
 				if (!Utils.isTouch(point, 250, 563, 111, 60)) { // boton1
 					try {
 						buttons.put(1, false);
-						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button1.png")));
+						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button1.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -56,7 +77,7 @@ public class Tragaperras extends JPanel {
 				if (!Utils.isTouch(point, 377, 563, 111, 60)) { // boton2
 					try {
 						buttons.put(2, false);
-						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button2.png")));
+						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button2.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -64,7 +85,7 @@ public class Tragaperras extends JPanel {
 				if (!Utils.isTouch(point, 530, 563, 142, 60)) { // boton3
 					try {
 						buttons.put(3, false);
-						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton.png")));
+						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("roundButton.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -78,7 +99,7 @@ public class Tragaperras extends JPanel {
 				if (Utils.isTouch(point, 250, 563, 111, 60)) { // boton1
 					try {
 						buttons.put(1, true);
-						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button1_pulsed.png")));
+						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button1_pulsed.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -86,7 +107,7 @@ public class Tragaperras extends JPanel {
 				if (Utils.isTouch(point, 377, 563, 111, 60)) { // boton2
 					try {
 						buttons.put(2, true);
-						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button2_pulsed.png")));
+						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button2_pulsed.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -94,7 +115,7 @@ public class Tragaperras extends JPanel {
 				if (Utils.isTouch(point, 530, 563, 142, 60)) { // boton3
 					try {
 						buttons.put(3, true);
-						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton_pulsed.png")));
+						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("roundButton_pulsed.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -109,7 +130,7 @@ public class Tragaperras extends JPanel {
 							
 						}
 						buttons.put(1, false);
-						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button1.png")));
+						slotMachine.getRenderableObject("button1").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button1.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -120,7 +141,7 @@ public class Tragaperras extends JPanel {
 							
 						}
 						buttons.put(2, false);
-						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button2.png")));
+						slotMachine.getRenderableObject("button2").setTexture(ImageIO.read(getClass().getClassLoader().getResource("button2.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}
@@ -131,7 +152,7 @@ public class Tragaperras extends JPanel {
 							spin();
 						}
 						buttons.put(3, false);
-						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton.png")));
+						slotMachine.getRenderableObject("roundButton").setTexture(ImageIO.read(getClass().getClassLoader().getResource("roundButton.png")));
 					} catch (IOException e1) {
 						e1.printStackTrace();
 					}

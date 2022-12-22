@@ -18,11 +18,11 @@ public class SlotMachinePanel extends Canvas {
 	public SlotMachinePanel() {
 		setBounds(0, 0, 951, 756);
 		try {
-			lightOn = ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/lightOn.png"));
-			addRenderable(new RenderableObject("slot_machine", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/slotMachine.png"))));
-			addRenderable(new RenderableObject("button1", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button1.png"))));
-			addRenderable(new RenderableObject("button2", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/button2.png"))));
-			addRenderable(new RenderableObject("roundButton", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("tragaperras/images/machine/roundButton.png"))));
+			lightOn = ImageIO.read(getClass().getClassLoader().getResource("lightOn.png"));
+			addRenderable(new RenderableObject("slot_machine", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("slotMachine.png"))));
+			addRenderable(new RenderableObject("button1", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("button1.png"))));
+			addRenderable(new RenderableObject("button2", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("button2.png"))));
+			addRenderable(new RenderableObject("roundButton", 0, 0, 951, 756, ImageIO.read(getClass().getClassLoader().getResource("roundButton.png"))));
 			int[][] pos = new int[44][2];
 			for (int i = 0; i < 12; i++) {
 				pos[i] = new int[] {(int) (164 + (i*49.5)), 249};

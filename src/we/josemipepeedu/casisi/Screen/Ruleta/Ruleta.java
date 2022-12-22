@@ -7,7 +7,6 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.JButton;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -24,7 +23,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 
 /*
  * Clase de la Ruleta
@@ -66,7 +64,8 @@ public class Ruleta extends JPanel {
 	 * https://www.youtube.com/watch?v=WIIf3WaO5x4
 	 */
 
-	public Ruleta(Casisi ventana) {
+	public Ruleta(Casisi casisi) {
+		casisi.repaint();
 		setLayout(null);
 		setBackground(new Color(3, 76, 3));
 		
@@ -74,20 +73,20 @@ public class Ruleta extends JPanel {
 		topPanel.setBackground(transparente);
 		topPanel.setLayout(null);
 		//topPanel.setBorder(new LineBowrder(Color.red));
-		topPanel.setBounds(0, 0, (ventana.getWidth() - 16), (int) (ventana.getHeight() * 0.1));
+		topPanel.setBounds(0, 0, (casisi.getWidth() - 16), (int) (casisi.getHeight() * 0.1));
 		//System.out.println("Diferencia de anchura: " + (ventana.getWidth() - topPanel.getWidth()));
 		
 		// gamePanel
 		gamePanel.setBackground(transparente);
 		gamePanel.setLayout(null);
 		//gamePanel.setBorder(new LineBorder(Color.blue));
-		gamePanel.setBounds(0, (int) (ventana.getHeight() * 0.1), (int) ventana.getWidth() - 16, (int) (ventana.getHeight() * 0.8) - 39);
+		gamePanel.setBounds(0, (int) (casisi.getHeight() * 0.1), (int) casisi.getWidth() - 16, (int) (casisi.getHeight() * 0.8) - 39);
 		
 		// bottomPanel
 		bottomPanel.setBackground(transparente);
 		bottomPanel.setLayout(null); 
 		//bottomPanel.setBorder(new LineBorder(Color.red));
-		bottomPanel.setBounds(0, (int) (ventana.getHeight() * 0.9) - 39, (int) ventana.getWidth() - 16, (int) (ventana.getHeight() * 0.1));
+		bottomPanel.setBounds(0, (int) (casisi.getHeight() * 0.9) - 39, (int) casisi.getWidth() - 16, (int) (casisi.getHeight() * 0.1));
 				
 		// Boton volver
 		try {
@@ -95,14 +94,14 @@ public class Ruleta extends JPanel {
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
-					System.out.println("AAA");
-					ventana.repaint();
+					casisi.setContentPane(casisi.getScreens().get("game-inicio"));
+					casisi.repaint();
 				}
 			});
 			volver.setBackgroundType(BackgroundType.PANEL);
 			volver.setBackground(new Color(0, 0, 0, 0));
 			volver.setBounds(0, 0, 80, 80);
-			volver.setBorder(new LineBorder(Color.BLUE));
+			//volver.setBorder(new LineBorder(Color.BLUE));
 			topPanel.add(volver);
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -217,6 +216,7 @@ public class Ruleta extends JPanel {
 		add(topPanel);
 		add(gamePanel);
 		add(bottomPanel);
+		setVisible(true);
 	}
 	
 	public static JPanel getGamePanel() {

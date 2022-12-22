@@ -37,10 +37,9 @@ public class Game extends Canvas {
 	
 	private int[] numeros = {0, 26, 3, 35, 12, 28, 7, 29, 18, 22, 9, 31, 14, 20, 1, 33, 16, 24, 5, 10, 23, 8, 30, 11, 36, 13, 27, 6, 34, 17, 25, 2, 21, 4, 19, 15, 32}; // Array que contiene la posicion de los numeros y su contenido
 	
-	// Estas variables se encargan de hacer que la ruleta gire
-	private boolean ascend = false;
-	private boolean rotate = false;
-	private boolean enableTirar = true;
+	private boolean ascend = false; //
+	private boolean rotate = false; // Estas variables se encargan de hacer que la ruleta gire
+	private boolean enableTirar = true; //
 	
 	private static HashMap<String, RenderableObject> objetos = new HashMap<String, RenderableObject>(); // HashMap que contiene los objetos rendeables
 	//private static HashMap<>
@@ -69,14 +68,14 @@ public class Game extends Canvas {
 		});
 		
 		try {
-			addObject("ruleta", new RenderableObject("ruleta", 5, 20, (int) (452 - (452 * 0.08)), (int) (452 - (452 * 0.08)), ImageIO.read(getClass().getClassLoader().getResource("ruleta/ruleta.png"))));
-			addObject("tabla", new RenderableObject("tabla", (int) (452 - (452 * 0.08)) + 5, 5, 712, 341, ImageIO.read(getClass().getClassLoader().getResource("ruleta/tabla.png"))));
-			addObject("ficha1", new Ficha1("ficha1", 0, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_1.png")), 1));
-			addObject("ficha5", new Ficha5("ficha5", 50, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_5.png")), 5));
-			addObject("ficha10", new Ficha10("ficha10", 100, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_10.png")), 10));
-			addObject("ficha20", new Ficha20("ficha20", 150, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_20.png")), 20));
-			addObject("ficha50", new Ficha50("ficha50", 200, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_50.png")), 50));
-			addObject("ficha100", new Ficha100("ficha100", 250, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ruleta/fichas/ficha_100.png")), 100));
+			addObject("ruleta", new RenderableObject("ruleta", 5, 20, (int) (452 - (452 * 0.08)), (int) (452 - (452 * 0.08)), ImageIO.read(getClass().getClassLoader().getResource("ruleta.png"))));
+			addObject("tabla", new RenderableObject("tabla", (int) (452 - (452 * 0.08)) + 5, 5, 712, 341, ImageIO.read(getClass().getClassLoader().getResource("tabla.png"))));
+			addObject("ficha1", new Ficha1("ficha1", 0, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_1.png")), 1));
+			addObject("ficha5", new Ficha5("ficha5", 50, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_5.png")), 5));
+			addObject("ficha10", new Ficha10("ficha10", 100, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_10.png")), 10));
+			addObject("ficha20", new Ficha20("ficha20", 150, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_20.png")), 20));
+			addObject("ficha50", new Ficha50("ficha50", 200, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_50.png")), 50));
+			addObject("ficha100", new Ficha100("ficha100", 250, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("ficha_100.png")), 100));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -111,7 +110,9 @@ public class Game extends Canvas {
 				g.drawImage(objetos.get("ficha100").getTexture().getScaledInstance(50, 50, Image.SCALE_SMOOTH), objetos.get("ficha100").getX(), objetos.get("ficha100").getY(), objetos.get("ficha100").getWith(), objetos.get("ficha100").getHeight(), null);
 				g.setColor(Color.green);
 				g.fillPolygon(a, b, 3);
-				getGraphics().drawImage(img, 0, 0, getWidth(), getHeight(), null);
+				if (getGraphics() != null) {
+					getGraphics().drawImage(img, 0, 0, getWidth(), getHeight(), null);
+				}
 			}
 		} catch (Exception e) {
 			System.out.println("Error al pintar los objetos");
@@ -214,7 +215,7 @@ public class Game extends Canvas {
 			//System.out.println("Ficha: " + fichas.getX() + " - " + fichas.getY());
 			//System.out.println("Mouse: " + mouseX + " - " + mouseY);
 			if (mouseX >= loc.getX() && mouseX <= loc.getX() + 50 && mouseY >= loc.getY() && mouseY <= loc.getY() + 50) {
-				System.out.println("entro");
+				//System.out.println("entro");
 				return true;
 			}
 		}
