@@ -19,8 +19,13 @@ import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Utils.BackgroundType;
 import we.josemipepeedu.casisi.Utils.ImagePanel;
 import we.josemipepeedu.casisi.Utils.Screen;
+import we.josemipepeedu.casisi.system.BankSystem;
 
 import java.awt.Rectangle;
+import javax.swing.JLabel;
+import java.awt.Font;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class Blackjack extends Screen {
 	private boolean playing = true;
@@ -29,8 +34,11 @@ public class Blackjack extends Screen {
 	private HashMap<Cartas, List<Integer>> mano_jugador = new HashMap<Cartas, List<Integer>>();
 	private HashMap<Cartas, List<Integer>> mano_crupier = new HashMap<Cartas, List<Integer>>();
 	private final JTextField apuesta = new JTextField();
+	private BankSystem banco = new BankSystem();
 	
 	private static ImagePanel volver;
+	
+	public JLabel saldo;
 	
 	public Blackjack(Casisi casisi) throws IOException {
 		super(null);
@@ -77,6 +85,20 @@ public class Blackjack extends Screen {
 
 		Barajar.setBounds(868, 682, 89, 23);
 		add(Barajar);
+		apuesta.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyTyped(KeyEvent e) {
+				char caracter = e.getKeyChar();
+				
+				// Verificar si la tecla pulsada no es un dï¿½gito
+				if (((caracter < '0') || (caracter > '9')) && (caracter != '\b')) { // '\b' es un espacio
+					e.consume(); // Ignora el evento de un teclado
+				}
+				if (apuesta.getText().length() >= 9) {
+					e.consume();
+				}
+			}
+		});
 		apuesta.setBounds(645, 736, 115, 23);
 		apuesta.setVisible(false);
 		add(apuesta);
@@ -84,13 +106,14 @@ public class Blackjack extends Screen {
 
 		final JButton btnNewButton_4 = new JButton("Confirmar");
 
+		
 		btnNewButton_4.setBounds(773, 736, 103, 23);
 		btnNewButton_4.setVisible(false);
 		add(btnNewButton_4);
 
 		ImagePanel tablero = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("tablero2.jpg")));
 		tablero.setBackgroundType(BackgroundType.PANEL);
-		tablero.setBounds(0, 0, 1185, 762);
+		tablero.setBounds(0, 0, 1200, 800);
 		add(tablero);
 
 		ImagePanel carta1 = new ImagePanel(null, 50);
@@ -157,7 +180,13 @@ public class Blackjack extends Screen {
 		carta3cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 		carta4cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
 		carta5cup.setTexture(ImageIO.read(getClass().getClassLoader().getResource("blackjack/reversocarta.png")));
-
+		
+		saldo = new JLabel();
+		saldo.setFont(new Font("Times New Roman", Font.BOLD, 40));
+		saldo.setBounds(942, 27, 222, 44);
+		tablero.add(saldo);
+		
+		
 
 
 		pedircard.addActionListener(new ActionListener() {
@@ -273,8 +302,13 @@ public class Blackjack extends Screen {
 										"HAS GANADO!!" ,
 										"HAS GANADO",
 										JOptionPane.WARNING_MESSAGE);
+								if(Dinero()) {
+								Casisi.getBankSystem().addMoney(Integer.parseInt(apuesta.getText())*2);
+								apuesta.setText("0");
+								}
 							}
-						}
+							saldo.setText("Saldo: " + Casisi.getBankSystem().getMoney() + "$");
+						}	
 					}.start();
 				}
 			}
@@ -284,13 +318,22 @@ public class Blackjack extends Screen {
 			public void actionPerformed(ActionEvent e) {
 				apuesta.setVisible(false);
 				btnNewButton_4.setVisible(false);
+				
+				if(!Dinero()) {
+					JOptionPane.showMessageDialog(null,
+							"Apuesta Invalida",
+							"ERROR",
+							JOptionPane.WARNING_MESSAGE);
+				}else {
+					Casisi.getBankSystem().removeMoney(Integer.parseInt(apuesta.getText()));
+				}
 			}
 		});
 
 	}
 
 	/*
-	 * funcion recursiva para generar una carta aleatoria que no esté en la baraja.
+	 * funcion recursiva para generar una carta aleatoria que no estï¿½ en la baraja.
 	 */
 	private void generarCarta(ImagePanel panel, boolean esjugador) {
 		try {
@@ -305,13 +348,13 @@ public class Blackjack extends Screen {
 				// randomCarta.getId());
 				baraja.get(randomCarta.getType()).add(randomCarta.getId());
 				panel.setTexture(randomCarta.getTexture());
-				añadirMano(randomCarta, esjugador);
+				aÃ±adirMano(randomCarta, esjugador);
 			}
 		} catch (IOException e1) {
 			e1.printStackTrace();
 		}
 	}
-	private void añadirMano(Carta carta, boolean esjugador) {
+	private void aÃ±adirMano(Carta carta, boolean esjugador) {
 		if (esjugador) {
 			if (!mano_jugador.containsKey(carta.getType())) {
 				mano_jugador.put(carta.getType(), new ArrayList<Integer>());
@@ -366,6 +409,15 @@ public class Blackjack extends Screen {
 			return false;
 		}
 	}
+	
+	public boolean Dinero() {
+		
+		if(Integer.parseInt(apuesta.getText())> Casisi.getBankSystem().getMoney()) {
+			return false;
+		}else {
+			return true;
+		}
+	}
 
 
 	public boolean pasarde21(int mano) {
@@ -377,7 +429,8 @@ public class Blackjack extends Screen {
 	}
 	@Override
 	public void onOpen() {
-		
+		saldo.setText("Saldo: " + Casisi.getBankSystem().getMoney() + "$");
+		repaint();
 	}
 	@Override
 	public void onClose() {
