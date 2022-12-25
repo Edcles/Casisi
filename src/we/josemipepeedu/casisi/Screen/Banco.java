@@ -38,7 +38,7 @@ public class Banco extends Screen {
 		setLayout(null);
 		
 		try {
-			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
+			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("volver.png")));
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {

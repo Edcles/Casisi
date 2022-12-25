@@ -37,7 +37,7 @@ public enum SlotItem {
 		return allReward;
 	}
 	public static SlotItem getRandom() {
-		return getByID(12);
+		return getByID(Utils.random.nextInt(values().length) + 1);
 	}
 	public static SlotItem getByID(int id) {
 		for (SlotItem slotitem : values()) {

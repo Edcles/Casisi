@@ -38,21 +38,16 @@ public class Ruleta extends Screen {
 	
 	private static JLabel titulo = new JLabel(); // Label que contiene el título
 	private static JLabel saldo = new JLabel(); // Label que contiene el saldo que te queda
-	private static JLabel saldoIntroLabel = new JLabel(); // Label que contiene el texto para indicar que hay que introducir texto
 	
 	private static JTextField saldoIntro = new JTextField(10);
 	
 	private static ImagePanel volver; // Panel que se usa como boton para volver a la pantalla principal
 	
 	private static JButton tirar = new JButton(); // Boton que realiza las tiradas de la ruleta
-	private static JButton agregarSaldo = new JButton(); // Boton que introduce el saldo
-	private static JButton retirarSaldo = new JButton(); // Boton que retira el saldo
 	
 	private static Color transparente = new Color(0, 0, 0, 0); // Color transparente para los fondos de los paneles
 	
 	private static Game game; // Canvas que contiene el juego
-	
-	private static int saldoCant = 0; // Cantidad de saldo
 	
 	/*
 	 * URL página donde explica las reglas:
@@ -91,7 +86,7 @@ public class Ruleta extends Screen {
 				
 		// Boton volver
 		try {
-			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
+			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("volver.png")));
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {
@@ -114,11 +109,12 @@ public class Ruleta extends Screen {
 		
 		tirar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Random random = new Random();
-				int res = random.nextInt(37);
-				game.setNumWin(res);
-				game.setRotate(true);
-				game.setAscend(true);
+				if (Integer.parseInt(saldo.getText()) != 0) {
+					game.setRotate(true);
+					game.setAscend(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "No tienes fichas suficientes para hacer una apuesta, la apuesta mínima son 1$ y la mázima son 500$.");
+				}
 			}
 		});
 
@@ -142,7 +138,6 @@ public class Ruleta extends Screen {
 		
 		// Elementos de bottomPanel
 		// Saldo
-		saldo.setText("Saldo actual: " + saldoCant + "$");
 		saldo.setHorizontalAlignment(SwingConstants.LEFT);
 		saldo.setVerticalAlignment(SwingConstants.CENTER);
 		//saldo.setBorder(new LineBorder(Color.red));
@@ -150,67 +145,8 @@ public class Ruleta extends Screen {
 		saldo.setFont(new Font("Franklin Gothic Demi", Font.BOLD, 35));
 		saldo.setForeground(Color.white);
 		
-		// Retirar
-		retirarSaldo.setText("RETIRAR SALDO");
-		retirarSaldo.setHorizontalAlignment(SwingConstants.CENTER);
-		retirarSaldo.setVerticalAlignment(SwingConstants.CENTER);
-		retirarSaldo.setBounds(365, 5, 260, 50);
-		retirarSaldo.setBackground(Color.blue);
-		retirarSaldo.setFont(new Font("Franklin Gothic Demi", Font.BOLD, 30));
-		retirarSaldo.setForeground(Color.white);
-		
-		// Saldo Introductor
-		saldoIntroLabel.setText("Introduce Saldo: ");
-		saldoIntroLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		saldoIntroLabel.setVerticalAlignment(SwingConstants.CENTER);
-		saldoIntroLabel.setBounds(720, 5, 170, 20);
-		saldoIntroLabel.setFont(new Font("Franklin Gothic Demi", Font.BOLD, 20));
-		saldoIntroLabel.setForeground(Color.white);
-		
-		saldoIntro.setBounds(720, 30, 170, 20);
-		saldoIntro.setFont(new Font("Franklin Gothic Demi", Font.BOLD, 20));
-		saldoIntro.setHorizontalAlignment(JTextField.RIGHT);
-		saldoIntro.addKeyListener(new KeyAdapter() {
-			public void keyTyped(KeyEvent e) {
-				char caracter = e.getKeyChar();
-				
-				// Verificar si la tecla pulsada no es un dígito
-				if (((caracter < '0') || (caracter > '9')) && (caracter != '\b')) { // '\b' es un espacio
-					e.consume(); // Ignora el evento de un teclado
-				}
-				if (saldoIntro.getText().length() >= 9) {
-					e.consume();
-				}
-			}
-		});
-		
-		// Boton agregarSaldo
-		agregarSaldo.setText("AGREGAR SALDO");
-		agregarSaldo.setHorizontalAlignment(SwingConstants.CENTER);
-		agregarSaldo.setVerticalAlignment(SwingConstants.CENTER);
-		agregarSaldo.setBounds(900, 5, 280, 50);
-		agregarSaldo.setBackground(Color.blue);
-		agregarSaldo.setFont(new Font("Franklin Gothic Demi", Font.BOLD, 30));
-		agregarSaldo.setForeground(Color.white);
-		agregarSaldo.addActionListener(new ActionListener() {			
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				if (saldoCant + Integer.parseInt(saldoIntro.getText()) <= 9999) {
-					saldoCant += Integer.parseInt(saldoIntro.getText());
-					saldo.setText("Saldo actual: " + saldoCant + "$");
-					repaint();
-					paintComponent(getGraphics());
-				} else {
-					JOptionPane.showMessageDialog(null, "El saldo no puede superar los 9999", "Error", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});	
-		
 		bottomPanel.add(saldo);
-		bottomPanel.add(retirarSaldo);
-		bottomPanel.add(saldoIntroLabel);
 		bottomPanel.add(saldoIntro);
-		bottomPanel.add(agregarSaldo);
 		
 		// Agregando los paneles a la ventana
 		add(topPanel);
@@ -223,6 +159,7 @@ public class Ruleta extends Screen {
 	}
 	@Override
 	public void onOpen() {
+		saldo.setText("Saldo actual: " + Casisi.getInstance().getBankSystem().getMoney() + "$");
 		game.paintThread();
 		repaint();
 	}

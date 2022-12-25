@@ -15,6 +15,7 @@ public class RenderableObject {
 	private BufferedImage bufferedImage;
 	private Color background;
 	private int angle = 0;
+	private boolean selected;
 	public RenderableObject(String id, int x, int y, int with, int height, BufferedImage bufferedImage) {
 		this.id = id;
 		this.x = x;
@@ -22,6 +23,15 @@ public class RenderableObject {
 		this.with = with;
 		this.height = height;
 		this.bufferedImage = bufferedImage;
+	}
+	public RenderableObject(String id, int x, int y, int with, int height, BufferedImage bufferedImage, boolean selected) {
+		this.id = id;
+		this.x = x;
+		this.y = y;
+		this.with = with;
+		this.height = height;
+		this.bufferedImage = bufferedImage;
+		this.selected = selected;
 	}
 	public String getID() {
 		return id;
@@ -68,7 +78,13 @@ public class RenderableObject {
 	public void setAngle(int angle) {
 		this.angle = angle;
 	}
-	private BufferedImage rotateImageByDegrees(int angle) {
+	public Boolean getSelected() {
+		return selected;
+	}
+	public void setSelected(Boolean selected) {
+		this.selected = selected;
+	}
+	public BufferedImage rotateImageByDegrees(int angle) {
 		double rads = Math.toRadians(angle);
         int w = bufferedImage.getWidth();
         int h = bufferedImage.getHeight();

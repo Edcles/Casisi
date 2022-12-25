@@ -134,9 +134,11 @@ public class Inicio extends Screen {
 
 			saldo = new JLabel();
 			saldo.setOpaque(true);
-			saldo.setForeground(new Color(241, 196, 15));
+			saldo.setForeground(Color.black);
+			saldo.setVerticalAlignment(SwingConstants.CENTER);
+			saldo.setHorizontalAlignment(SwingConstants.CENTER);
 			saldo.setFont(new Font("Times New Roman", Font.BOLD, 40));
-			saldo.setText("Saldo: " + casisi.getBankSystem().getMoney());
+			saldo.setText("Saldo: " + casisi.getBankSystem().getMoney() + "$");
 			saldo.setHorizontalAlignment(SwingConstants.TRAILING);
 			saldo.setBounds(950, 26, 225, 28);
 			saldo.setBackground(new Color(192, 192, 192, 225));
@@ -201,7 +203,7 @@ public class Inicio extends Screen {
 	@Override
 	public void onOpen() {
 		setTexture(Utils.selectedFondo);
-		saldo.setText("Saldo: " + Casisi.getInstance().getBankSystem().getMoney());
+		saldo.setText("Saldo: " + Casisi.getInstance().getBankSystem().getMoney() + "$");
 	}
 	@Override
 	public void onClose() {

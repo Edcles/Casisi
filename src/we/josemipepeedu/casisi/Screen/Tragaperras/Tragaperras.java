@@ -35,7 +35,7 @@ public class Tragaperras extends Screen {
 		setSize(new Dimension(1200, 800));
 		setLayout(null);
 		try {
-			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("logo.png")));
+			volver = new ImagePanel(ImageIO.read(getClass().getClassLoader().getResource("volver.png")));
 			volver.addMouseListener(new MouseAdapter() {
 				@Override
 				public void mouseClicked(MouseEvent e) {

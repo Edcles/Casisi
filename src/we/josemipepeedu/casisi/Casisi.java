@@ -20,12 +20,13 @@ import we.josemipepeedu.casisi.system.BankSystem;
 public class Casisi extends JFrame {
 	private static Casisi instance;
 	private HashMap<String, Screen> screens = new HashMap<String, Screen>();
-	private BankSystem bankSystem = new BankSystem();
+	private static BankSystem bankSystem = new BankSystem();
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
 					Casisi frame = new Casisi();
+					frame.setLocation(0, 0);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -64,7 +65,7 @@ public class Casisi extends JFrame {
 	public static Casisi getInstance() {
 		return instance;
 	}
-	public BankSystem getBankSystem() {
+	public static BankSystem getBankSystem() {
 		return bankSystem;
 	}
 }
