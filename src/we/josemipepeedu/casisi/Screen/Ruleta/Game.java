@@ -12,6 +12,7 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+import we.josemipepeedu.casisi.Casisi;
 import we.josemipepeedu.casisi.Screen.Ruleta.Objetos.Ficha;
 import we.josemipepeedu.casisi.Utils.GameLocation;
 import we.josemipepeedu.casisi.Utils.RenderableObject;
@@ -36,7 +37,7 @@ public class Game extends Canvas {
 	private boolean enableTirar = true; //
 	
 	private static HashMap<String, RenderableObject> objetos = new HashMap<String, RenderableObject>(); // HashMap que contiene los objetos rendeables
-	private static HashMap<Integer, Integer> apuesta = new HashMap<Integer, Integer>();
+	private static HashMap<Integer, Integer> apuesta = new HashMap<Integer, Integer>(); // Numero, Cantidad
 	/*
 	 * Las apuestas van:
 	 * 0 - 36 los numeros
@@ -53,7 +54,6 @@ public class Game extends Canvas {
 		this.ruleta = ruleta;
 		this.width = width;
 		this.height = height;
-		//System.out.println(width + " - " + height);
 		setBounds(0, 0, width, height);
 		setBackground(new Color(3, 76, 3));
 		addMouseListener(new MouseListener() {
@@ -70,28 +70,18 @@ public class Game extends Canvas {
 				mouseX = e.getX();
 				mouseY = e.getY();
 				System.out.println(mouseX + " - " + mouseY);
-				if (selectedFicha != null) {
-					
-				}
 			}
 		});
 		
 		try {
 			addObject("ruleta", new RenderableObject("ruleta", 5, 20, (int) (452 - (452 * 0.08)), (int) (452 - (452 * 0.08)), ImageIO.read(getClass().getClassLoader().getResource("ruleta/ruleta.png"))));
-			//addObject("tabla", new RenderableObject("tabla", (int) (452 - (452 * 0.08)) + 5, 5, 712, 341, ImageIO.read(getClass().getClassLoader().getResource("ruleta/tabla.png"))));
+			addObject("tabla", new RenderableObject("tabla", (int) 436, 14, 548, 263, ImageIO.read(getClass().getClassLoader().getResource("ruleta/tabla.png"))));
 			addObject("ficha1", new Ficha("ficha1", 0, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_1.png")), 1, false));
 			addObject("ficha5", new Ficha("ficha5", 50, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_5.png")), 5, false));
 			addObject("ficha10", new Ficha("ficha10", 100, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_10.png")), 10, false));
 			addObject("ficha20", new Ficha("ficha20", 150, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_20.png")), 20, false));
 			addObject("ficha50", new Ficha("ficha50", 200, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_50.png")), 50, false));
 			addObject("ficha100", new Ficha("ficha100", 250, 500, 50, 50, ImageIO.read(getClass().getClassLoader().getResource("coins/ficha_100.png")), 100, false));
-			int cont = 1;
-			for(int i = 0; i < 13; i++) {
-				for (int j = 0; j < 3; j++) {
-					addObject("panel" + cont, new RenderableObject(""+cont, 493 + (35 * i) + 2, 30 + (50 * j) + 2, 35, 50, null));
-					cont++;
-				}
-			}
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -122,10 +112,6 @@ public class Game extends Canvas {
 					if (object.getSelected() == true) {
 						g.setColor(Color.yellow);
 						g.fillOval(object.getX(), object.getY(), object.getWith(), object.getHeight());
-					}
-					if (objetos.get("panel1").equals(object)) {
-						g.setColor(Color.black);
-						g.fillRect(object.getX(), object.getY(), object.getWith(), object.getHeight());
 					}
 					object.paint(g);
 				}
@@ -162,18 +148,15 @@ public class Game extends Canvas {
 							}
 							
 							rotation += force;
-							//System.out.println(Math.floor(22.61111111111));
 						} else if (!rotate && !enableTirar) {
 							checkWin(rotation);
 						}
 						for (RenderableObject object : objetos.values()) {
-							if (isTouch(object) && object instanceof RenderableObject) {
-								System.out.println(object.getID());
-							}
 							if (isTouch(object) && object instanceof Ficha) {
 								object.setSelected(true);
 								selectedFicha = (Ficha) object;
 							} else {
+								selectedFicha = null;
 								object.setSelected(false);
 							}
 						}
@@ -212,13 +195,13 @@ public class Game extends Canvas {
 		double decimal = vueltas - entera; // Resto el resultado de giros menos los giros totales enteros
 				
 		int giro = (int) (decimal * 360);
-		System.out.println("Suelo: " + Math.floor(giro / (360 / 37)));
+		//System.out.println("Suelo: " + Math.floor(giro / (360 / 37)));
 		double tam = 360.0 / 37.0;
 		double posDec = giro / tam;
-		System.out.println(tam);
+		//System.out.println(tam);
 		int pos = (int) Math.ceil(posDec);
 		
-		System.out.println("Rotacion: " + rotation + " -  Vueltas: " + vueltas + " - Decimal: " + decimal + " - Giro: " + giro + " - Pos: " + pos + " - LastPos: " + lastPos);
+		//System.out.println("Rotacion: " + rotation + " -  Vueltas: " + vueltas + " - Decimal: " + decimal + " - Giro: " + giro + " - Pos: " + pos + " - LastPos: " + lastPos);
 		
 		if (lastPos != 0) {
 			changePos = pos;
@@ -226,11 +209,11 @@ public class Game extends Canvas {
 			lastPos = changePos;
 		}
 		
-		if (numeros[pos] == numWin) {
+		/*if (numeros[pos] == numWin) {
 			System.out.println("Premio: " + numWin + " - " + numeros[pos]);
 		} else {
 			System.out.println("Pierdes: " + numWin + " - " + numeros[pos]);
-		}
+		}*/
 		enableTirar = true;
 	}
 	
@@ -251,12 +234,7 @@ public class Game extends Canvas {
 			if (mouseX >= loc.getX() && mouseX <= loc.getX() + 50 && mouseY >= loc.getY() && mouseY <= loc.getY() + 50) {
 				return true;
 			}
-		}
-		if (object instanceof RenderableObject) {
-			if (mouseX >= object.getX() && mouseX <= (object.getX()+object.getWith()) && mouseY >= object.getY() && mouseY <= (object.getY() + object.getHeight())) {
-				return true;
-			}
-		}
+		} 
 		return false;
 	}
 }

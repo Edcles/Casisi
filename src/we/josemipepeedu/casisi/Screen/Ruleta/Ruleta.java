@@ -109,7 +109,7 @@ public class Ruleta extends Screen {
 		
 		tirar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if (Integer.parseInt(saldo.getText()) != 0) {
+				if (Casisi.getInstance().getBankSystem().getMoney() != 0) {
 					game.setRotate(true);
 					game.setAscend(true);
 				} else {
