@@ -49,15 +49,17 @@ public class ImagePanel extends JPanel {
 		repaint();
 	}
 	public void paintComponent(Graphics g) {
-		g.setColor(getBackground());
-		g.fillRect(0, 0, getWidth(), getHeight());
+		if (getBackground().getAlpha() != 0) {
+			g.setColor(getBackground());
+			g.fillRect(0, 0, getWidth(), getHeight());
+		}
 		if (directedTexture != null) {
 			if (backgroundType.equals(BackgroundType.FILL)) {
 				for (int x = 0; x <= (getWidth() / directedTexture.getWidth()); x++) {
 					for (int y = 0; y <= (getHeight() / directedTexture.getHeight()); y++) {
 						g.drawImage(radious != 0 ? makeRoundedCorner(directedTexture, radious) : directedTexture, directedTexture.getWidth()*x, directedTexture.getWidth()*y, null);
 					}
-				}	
+				}
 			} else if (backgroundType.equals(BackgroundType.IMAGE) ) {
 				g.drawImage(radious != 0 ? makeRoundedCorner(directedTexture, radious) : directedTexture, 0, 0, null);
 			} else if (backgroundType.equals(BackgroundType.PANEL) ) {
